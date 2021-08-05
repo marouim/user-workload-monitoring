@@ -7,8 +7,8 @@ import javax.ws.rs.core.MediaType;
 import javax.inject.Inject;
 import io.micrometer.core.instrument.MeterRegistry;
 
-@Path("/monitoring-demo-app")
-public class MonitoringResource {
+@Path("/metric1")
+public class Metric1Resource {
 
     @Inject
     MeterRegistry registry;
@@ -16,8 +16,8 @@ public class MonitoringResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String hello() {
-        registry.counter("greeting_counter").increment();
+        registry.counter("app_metric_perso1").increment();
 
-        return "Hello RESTEasy";
+        return "Increment app_metric_perso1 metric";
     }
 }
