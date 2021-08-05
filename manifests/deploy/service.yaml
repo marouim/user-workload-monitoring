@@ -1,0 +1,26 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: monitoring-demo-app
+  labels:
+    app: monitoring-demo-app
+    app.kubernetes.io/component: monitoring-demo-app
+    app.kubernetes.io/instance: monitoring-demo-app
+    app.kubernetes.io/name: monitoring-demo-app
+    app.kubernetes.io/part-of: monitoring-demo-app
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-8-ubi8
+  annotations:
+    app.openshift.io/vcs-ref: ''
+    app.openshift.io/vcs-uri: 'https://github.com/marouim/user-workload-monitoring.git'
+
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: monitoring-demo-app
+    deploymentconfig: monitoring-demo-app
+  type: ClusterIP

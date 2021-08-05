@@ -1,0 +1,50 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: monitoring-demo-app
+  namespace: integrations
+  labels:
+    app: monitoring-demo-app
+    app.kubernetes.io/component: monitoring-demo-app
+    app.kubernetes.io/instance: monitoring-demo-app
+    app.kubernetes.io/name: monitoring-demo-app
+    app.kubernetes.io/part-of: monitoring-demo-app
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-8-ubi8
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'monitoring-demo-app:latest'
+  resources: {}
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: 'java:latest'
+  postCommit: {}
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/marouim/user-workload-monitoring.git'
+    contextDir: /monitoring-demo-app
+  triggers:
+    - type: Generic
+      generic:
+        secretReference:
+          name: monitoring-demo-app-generic-webhook-secret
+    - type: GitHub
+      github:
+        secretReference:
+          name: monitoring-demo-app-github-webhook-secret
+    - type: ImageChange
+      imageChange:
+        lastTriggeredImageID: >-
+          image-registry.openshift-image-registry.svc:5000/openshift/java@sha256:a3bd896e1c0f5adabdaf9b97055148dc7eacafb0a228864e3108b7cc13db235c
+    - type: ConfigChange
+  runPolicy: Serial

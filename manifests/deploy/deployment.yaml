@@ -1,0 +1,61 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    alpha.image.policy.openshift.io/resolve-names: '*'
+    app.openshift.io/vcs-ref: ''
+    app.openshift.io/vcs-uri: 'https://github.com/marouim/user-workload-monitoring.git'
+    deployment.kubernetes.io/revision: '9'
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"monitoring-demo-app:latest","namespace":"integrations"},"fieldPath":"spec.template.spec.containers[?(@.name==\"monitoring-demo-app\")].image","pause":"false"}]
+    openshift.io/generated-by: OpenShiftWebConsole
+
+  name: monitoring-demo-app
+
+  labels:
+    app: monitoring-demo-app
+    app.kubernetes.io/component: monitoring-demo-app
+    app.kubernetes.io/instance: monitoring-demo-app
+    app.kubernetes.io/name: monitoring-demo-app
+    app.kubernetes.io/part-of: monitoring-demo-app
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-8-ubi8
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitoring-demo-app
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: monitoring-demo-app
+        deploymentconfig: monitoring-demo-app
+    spec:
+      containers:
+        - name: monitoring-demo-app
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/integrations/monitoring-demo-app@sha256:8ad0c0211d7efcacd884eeb3a0b8ba16713478ee0a96b4048928c85861c8b03a
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+            - containerPort: 8778
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
