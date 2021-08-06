@@ -1,0 +1,23 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: monitor-demo-app
+  labels:
+    app: monitoring-demo-app
+    app.kubernetes.io/component: monitoring-demo-app
+    app.kubernetes.io/instance: monitoring-demo-app
+    app.kubernetes.io/name: monitoring-demo-app
+    app.kubernetes.io/part-of: monitoring-demo-app
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-8-ubi8
+
+spec:
+  to:
+    kind: Service
+    name: monitoring-demo-app
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+  tls:
+    termination: edge
+  wildcardPolicy: None
