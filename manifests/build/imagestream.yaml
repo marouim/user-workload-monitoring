@@ -4,4 +4,4 @@ metadata:
   name: monitoring-demo-app
 spec:
   lookupPolicy:
-    local: false
+    local: true

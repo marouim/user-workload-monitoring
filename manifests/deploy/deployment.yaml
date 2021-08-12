@@ -7,7 +7,7 @@ metadata:
     app.openshift.io/vcs-uri: 'https://github.com/marouim/user-workload-monitoring.git'
     deployment.kubernetes.io/revision: '9'
     image.openshift.io/triggers: >-
-      [{"from":{"kind":"ImageStreamTag","name":"monitoring-demo-app:latest","namespace":"integrations"},"fieldPath":"spec.template.spec.containers[?(@.name==\"monitoring-demo-app\")].image","pause":"false"}]
+      [{"from":{"kind":"ImageStreamTag","name":"monitoring-demo-app:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"monitoring-demo-app\")].image","pause":"false"}]
     openshift.io/generated-by: OpenShiftWebConsole
 
   name: monitoring-demo-app
@@ -35,7 +35,7 @@ spec:
       containers:
         - name: monitoring-demo-app
           image: >-
-            image-registry.openshift-image-registry.svc:5000/integrations/monitoring-demo-app@sha256:8ad0c0211d7efcacd884eeb3a0b8ba16713478ee0a96b4048928c85861c8b03a
+            monitoring-demo-app:latest
           ports:
             - containerPort: 8080
               protocol: TCP

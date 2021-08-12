@@ -42,9 +42,5 @@ spec:
       github:
         secretReference:
           name: monitoring-demo-app-github-webhook-secret
-    - type: ImageChange
-      imageChange:
-        lastTriggeredImageID: >-
-          image-registry.openshift-image-registry.svc:5000/openshift/java@sha256:a3bd896e1c0f5adabdaf9b97055148dc7eacafb0a228864e3108b7cc13db235c
     - type: ConfigChange
   runPolicy: Serial
